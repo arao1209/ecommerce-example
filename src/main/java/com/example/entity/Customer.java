@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private int id;
 
@@ -38,8 +38,8 @@ public class Customer {
     private String emailId;
 
     @Column(name = "phone_number")
-    @NotEmpty(message = "Phone Number can not be empty and must have >0")
-    private long phoneNum;
+    @Size(min = 10, max = 10, message = "phone number length should be 10")
+    private String phoneNum;
 
     @Column(name = "address")
     @NotNull(message = "Address can not be empty and must have >0")
@@ -48,7 +48,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int id, String fName, String lName, String uName, String password, String emailId, long phoneNum, String address) {
+    public Customer(int id, String fName, String lName, String uName, String password, String emailId, String phoneNum, String address) {
         this.id = id;
         this.fName = fName;
         this.lName = lName;
@@ -107,11 +107,11 @@ public class Customer {
         this.emailId = emailId;
     }
 
-    public long getPhoneNum() {
+    public String getPhoneNum() {
         return phoneNum;
     }
 
-    public void setPhoneNum(long phoneNum) {
+    public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
 
