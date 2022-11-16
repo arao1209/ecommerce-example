@@ -1,16 +1,17 @@
 package com.example.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "vendors")
 public class Vendor {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(name = "name")
+    @NotEmpty
     private String name;
 
     public Vendor() {

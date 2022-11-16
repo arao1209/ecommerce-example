@@ -24,7 +24,7 @@ public class CustomerController {
 
         customerService.addCustomer(customer);
 
-        logger.info("Valid field of Customer added into Database, Customer Id {} ", customer.getId());
+        logger.info("Customer added into Database, Customer Id {} ", customer.getId());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -54,7 +54,7 @@ public class CustomerController {
     public ResponseEntity<Object> updateCustomer(@Valid @RequestBody Customer customer){
 
         customerService.updateCustomer(customer);
-        
+
         logger.info("Updated customer and id is {} ",customer.getId());
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
