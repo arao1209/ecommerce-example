@@ -1,18 +1,18 @@
 package com.example.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "admin")
 public class Admin {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private int id;
 
     @Column(name = "name")
+    @NotEmpty
     private String name;
 
     public Admin() {
