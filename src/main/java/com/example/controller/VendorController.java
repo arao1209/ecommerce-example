@@ -41,7 +41,7 @@ public class VendorController {
     }
 
     @DeleteMapping(path = "ecommerce/v1/deleteVendorName")
-    public ResponseEntity<Object> deleteVendor(@Valid @RequestParam int id){
+    public ResponseEntity<Object> deleteVendor(@RequestParam int id){
 
         vendorService.deleteVendor(id);
 

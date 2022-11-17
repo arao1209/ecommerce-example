@@ -1,21 +1,24 @@
 package com.example.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "products")
 public class Product {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(name = "name")
+    @NotEmpty
     private String name;
 
     @Column(name = "price")
     private double price;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 

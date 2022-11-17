@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @DeleteMapping(path = "ecommerce/v1/deleteAdminName")
-    public ResponseEntity<Object> deleteAdminName(@Valid @RequestParam int id){
+    public ResponseEntity<Object> deleteAdminName(@RequestParam int id){
         adminService.deleteAdminName(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

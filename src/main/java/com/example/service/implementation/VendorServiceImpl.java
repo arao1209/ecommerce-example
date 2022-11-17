@@ -32,6 +32,7 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
+    // TODO : Handle key constraint violation exception
     public void deleteVendor(int id) {
         vendorRepository.deleteById(id);
     }
