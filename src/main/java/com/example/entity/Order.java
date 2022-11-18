@@ -1,10 +1,14 @@
 package com.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Entity(name = "orders")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Order {
 
     @Id
@@ -20,17 +24,19 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
 
     public Order() {
     }
 
-    public Order(String id, String status, Customer customer) {
+    public Order(String id, String status, Customer customer, Product product) {
         this.id = id;
         this.status = status;
         this.customer = customer;
+        this.product = product;
     }
 
     public String getId() {
