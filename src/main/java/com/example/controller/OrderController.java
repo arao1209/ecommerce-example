@@ -1,6 +1,8 @@
 package com.example.controller;
 
 import com.example.entity.Order;
+import com.example.exception.OrderNotFoundException;
+import com.example.exception.OrderStatusInvalidException;
 import com.example.service.OrderService;
 import com.example.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +48,8 @@ public class OrderController {
             return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
         }
         else{
-            return new ResponseEntity<>("Not updated"+status, HttpStatus.NO_CONTENT);
-
+            throw new OrderStatusInvalidException(id, status);
+//            return new ResponseEntity<>("Not updated"+status, HttpStatus.NO_CONTENT);
         }
 
     }
