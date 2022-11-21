@@ -18,7 +18,7 @@ public class OrderExceptionController {
 
     @ExceptionHandler(value = OrderStatusInvalidException.class)
     public ResponseEntity<Object> orderStatusInvalidException(OrderStatusInvalidException exception){
-        return new ResponseEntity<>("Order ID: "+exception.getId()+ " is valid but, the Status "+exception.getStatus()+" is Invalid", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Order ID: "+exception.getId()+ " is valid but, the Status "+exception.getStatus()+" is Invalid", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(value = SameOrderStatusException.class)
