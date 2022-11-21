@@ -1,10 +1,8 @@
 package com.example.controller;
 
 import com.example.entity.Order;
-import com.example.repository.OrderRepository;
 import com.example.service.OrderService;
 import com.example.util.Constant;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
 
     @PostMapping(path = "ecommerce/v1/addOrder")
     public ResponseEntity<Object> addOrder(@Valid @RequestBody Order order){
