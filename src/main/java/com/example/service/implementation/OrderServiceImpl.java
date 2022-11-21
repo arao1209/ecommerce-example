@@ -1,7 +1,15 @@
 package com.example.service.implementation;
 
+import com.example.entity.Customer;
 import com.example.entity.Order;
+import com.example.entity.Product;
+import com.example.exception.CustomerNotFoundException;
+import com.example.exception.OrderNotFoundException;
+import com.example.exception.ProductNotFoundException;
+import com.example.exception.SameOrderStatusException;
+import com.example.repository.CustomerRepository;
 import com.example.repository.OrderRepository;
+import com.example.repository.ProductRepository;
 import com.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +23,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
     public void addOrder(Order order) {
@@ -32,12 +46,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrdersByCustomerId(int customer_id) {
-        return orderRepository.getOrdersByCustomerId(customer_id);
+
+        Optional<Customer> customer = customerRepository.findById(customer_id);
+        if(customer.isPresent()) {
+            return orderRepository.getOrdersByCustomerId(customer_id);
+        }
+        else {
+            throw new CustomerNotFoundException(customer_id);
+        }
     }
 
     @Override
     public List<Order> getOrdersByProductId(int product_id){
-        return orderRepository.getOrdersByProductId(product_id);
+
+        Optional<Product> productOptionalFromDB = productRepository.findById(product_id);
+        if(productOptionalFromDB.isPresent()){
+            return orderRepository.getOrdersByProductId(product_id);
+        }
+        else{
+            throw new ProductNotFoundException(product_id);
+        }
     }
 
     @Override
@@ -45,12 +73,37 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<Order> orderOptionalFromDB = orderRepository.findById(order.getId());
 
-        if(orderOptionalFromDB.isPresent()){
-            Order updatedOrder = orderOptionalFromDB.get();
-            updatedOrder.setStatus(order.getStatus());
-            orderRepository.save(updatedOrder);
+        try{
+            if(orderOptionalFromDB.isPresent()){
+
+                Order updatedOrder = orderOptionalFromDB.get();
+
+                if(updatedOrder.getStatus().equals(order.getStatus())){
+
+                    throw new SameOrderStatusException(order);
+                }
+
+                updatedOrder.setStatus(order.getStatus());
+                orderRepository.save(updatedOrder);
+            }
+            else{
+
+                throw new OrderNotFoundException(order.getId());
+            }
         }
-        // TODO : if not present put exception
+        catch (OrderNotFoundException e){
+
+            // TODO : Logger
+            throw new OrderNotFoundException(order.getId());
+
+        }
+        catch (SameOrderStatusException e){
+            throw new SameOrderStatusException(order);
+
+        }
+
+
+
 
     }
 

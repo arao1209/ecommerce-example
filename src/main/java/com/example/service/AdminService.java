@@ -11,7 +11,7 @@ public interface AdminService {
 
     List<Admin> getAllAdmin();
 
-    void updateAdminName(Admin admin);
+    void updateAdminName(int id, String name);
 
     void deleteAdminName(int id);
 

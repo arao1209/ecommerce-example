@@ -29,8 +29,8 @@ public class AdminController {
     }
 
     @PatchMapping(path = "ecommerce/v1/updateAdminName")
-    public ResponseEntity<Object> updateAdminName(@Valid @RequestBody Admin admin){
-        adminService.updateAdminName(admin);
+    public ResponseEntity<Object> updateAdminName(@RequestParam int id, @RequestParam String name){
+        adminService.updateAdminName(id, name);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
