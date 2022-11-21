@@ -49,7 +49,6 @@ public class OrderController {
         }
         else{
             throw new OrderStatusInvalidException(id, status);
-//            return new ResponseEntity<>("Not updated"+status, HttpStatus.NO_CONTENT);
         }
 
     }

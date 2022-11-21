@@ -2,8 +2,8 @@ package com.example.exception;
 
 public class OrderStatusInvalidException extends RuntimeException{
 
-    private String status;
-    private String id;
+    private final String status;
+    private final String id;
 
     public OrderStatusInvalidException(String id, String status){
         this.id = id;

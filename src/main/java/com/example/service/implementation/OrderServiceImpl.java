@@ -6,6 +6,7 @@ import com.example.entity.Product;
 import com.example.exception.CustomerNotFoundException;
 import com.example.exception.OrderNotFoundException;
 import com.example.exception.ProductNotFoundException;
+import com.example.exception.SameOrderStatusException;
 import com.example.repository.CustomerRepository;
 import com.example.repository.OrderRepository;
 import com.example.repository.ProductRepository;
@@ -72,15 +73,36 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<Order> orderOptionalFromDB = orderRepository.findById(order.getId());
 
-        if(orderOptionalFromDB.isPresent()){
+        try{
+            if(orderOptionalFromDB.isPresent()){
 
-            Order updatedOrder = orderOptionalFromDB.get();
-            updatedOrder.setStatus(order.getStatus());
-            orderRepository.save(updatedOrder);
+                Order updatedOrder = orderOptionalFromDB.get();
+
+                if(updatedOrder.getStatus().equals(order.getStatus())){
+
+                    throw new SameOrderStatusException(order);
+                }
+
+                updatedOrder.setStatus(order.getStatus());
+                orderRepository.save(updatedOrder);
+            }
+            else{
+
+                throw new OrderNotFoundException(order.getId());
+            }
         }
-        else{
+        catch (OrderNotFoundException e){
+
+            // TODO : Logger
             throw new OrderNotFoundException(order.getId());
+
         }
+        catch (SameOrderStatusException e){
+            throw new SameOrderStatusException(order);
+
+        }
+
+
 
 
     }

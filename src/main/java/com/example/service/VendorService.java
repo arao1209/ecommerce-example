@@ -10,7 +10,7 @@ public interface VendorService {
 
         List<Vendor> getAllVendors();
 
-        void updateVendorName(Vendor vendor);
+        void updateVendorName(int id, String name);
 
         void deleteVendor(int id);
 

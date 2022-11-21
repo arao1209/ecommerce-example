@@ -33,9 +33,9 @@ public class VendorController {
     }
 
     @PatchMapping(path = "ecommerce/v1/updateVendorName")
-    public ResponseEntity<Object> updateVendorName(@Valid @RequestBody Vendor vendor){
+    public ResponseEntity<Object> updateVendorName(@RequestParam int id, @RequestParam String name){
 
-        vendorService.updateVendorName(vendor);
+        vendorService.updateVendorName(id, name);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
