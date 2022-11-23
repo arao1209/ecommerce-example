@@ -16,4 +16,5 @@ public interface CustomerService {
 
     void deleteCustomerById(int id);
 
+    void deleteAllCache(String cacheName);
 }

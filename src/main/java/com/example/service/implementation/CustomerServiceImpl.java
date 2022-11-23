@@ -3,7 +3,9 @@ package com.example.service.implementation;
 import com.example.entity.Customer;
 import com.example.repository.CustomerRepository;
 import com.example.service.CustomerService;
+import com.example.util.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CacheUtil cacheUtil;
 
     @Override
     public void addCustomer(Customer customer){
@@ -38,6 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Cacheable(value = "customerInfo")
     public List<Customer> getAllCustomer(){
 
         List<Customer> customerList =  customerRepository.findAll();
@@ -56,6 +62,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomerById(int id){
 
         customerRepository.deleteById(id);
+
+    }
+
+    @Override
+    public void deleteAllCache(String cacheName){
+        cacheUtil.evictAllCacheValue(cacheName);
 
     }
 }

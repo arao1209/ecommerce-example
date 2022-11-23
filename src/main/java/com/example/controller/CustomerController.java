@@ -5,6 +5,7 @@ import com.example.service.CustomerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,14 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService; //Its beauty of spring-boot, through interface can access its implementation
 
+    @Autowired
+    CacheManager cacheManager;
+
     private static final Logger logger = LogManager.getLogger(CustomerController.class);
 
     @PostMapping(path = "ecommerce/v1/addCustomer")
     public ResponseEntity<Object> addCustomer(@Valid @RequestBody Customer customer){
+
 
         customerService.addCustomer(customer);
 
@@ -68,6 +73,13 @@ public class CustomerController {
         logger.info("Deleted customer by id {} ", id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping(path = "ecommerce/v1/clearCache")
+    public ResponseEntity<Object> clearCache(@RequestParam String cacheName){
+
+        customerService.deleteAllCache(cacheName);
+        return new ResponseEntity<>("Cache Cleared", HttpStatus.NO_CONTENT);
     }
 
 }
