@@ -11,13 +11,13 @@ import com.example.repository.CustomerRepository;
 import com.example.repository.OrderRepository;
 import com.example.repository.ProductRepository;
 import com.example.service.OrderService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+@Log4j2
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -66,6 +66,82 @@ public class OrderServiceImpl implements OrderService {
         else{
             throw new ProductNotFoundException(product_id);
         }
+    }
+
+    @Override
+    public List<Order> getAllOrdersFromAllCustomers(){
+        log.info("In service layer");
+        return orderRepository.getAllOrdersFromAllCustomers();
+    }
+
+    @Override
+    public Optional<Object> sortOrdersByPriceByCustomerID(int customer_id, String sortValue, String sortType){
+
+        List<Order> orderList;
+        if(sortType.equals("ASC")){
+            orderList = getOrdersByCustomerId(customer_id);
+            Collections.sort(orderList);
+            return Optional.of(orderList);
+        }
+        else if(sortType.equals("DESC")){
+            orderList = getOrdersByCustomerId(customer_id);
+            Comparator<Order> orderComparator = new Comparator<Order>() {
+                @Override
+                public int compare(Order o1, Order o2) {
+                    if(o1.getProduct() == null || o2.getProduct() == null){
+                        return 0;
+                    }
+                    else if(o1.getProduct().getPrice() > o2.getProduct().getPrice()){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                }
+            };
+            Collections.sort(orderList, orderComparator);
+            return Optional.of(orderList);
+        }
+        else{
+            log.info("Invalid sort type");
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Object> getOrderCountPlacedByCustomer(int customer_id) {
+
+        List<Order> orderList = orderRepository.getOrdersByCustomerId(customer_id);
+
+        return Optional.of(orderList);
+    }
+
+    @Override
+    public HashMap<String, Integer> getOrdersCountPlacedByAllCustomer(){
+
+        List<Order> allCustomerOrderList = orderRepository.getAllOrdersFromAllCustomers();
+        HashMap<String, Integer> orderAndCustomer = new HashMap<>();
+
+        for(int i=0;i<allCustomerOrderList.size();i++){
+
+            Order order = allCustomerOrderList.get(i);
+
+//                Integer count = orderAndCustomer.get(order.getCustomer().getFName());
+//                if(count == null){
+//                    orderAndCustomer.put(order.getCustomer().getFName(), 1);
+//                }
+//                else{
+//                    orderAndCustomer.put(order.getCustomer().getFName(), count+1);
+//                }
+
+            if(orderAndCustomer.containsKey(order.getCustomer().getFName())){
+                orderAndCustomer.put(order.getCustomer().getFName(), 1+(orderAndCustomer.get(order.getCustomer().getFName())));
+            }
+            else{
+                orderAndCustomer.put(order.getCustomer().getFName(), 1);
+            }
+        }
+        return orderAndCustomer;
     }
 
     @Override

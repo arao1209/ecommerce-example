@@ -11,6 +11,7 @@ public class AdminExceptionController {
 
     @ExceptionHandler(value = AdminNotFoundException.class)
     public ResponseEntity<Object> adminNotFoundException(AdminNotFoundException e){
+        
         return new ResponseEntity<>("Admin id "+e.getId()+" Not Found", HttpStatus.NOT_FOUND);
     }
 

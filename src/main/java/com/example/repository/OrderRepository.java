@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
+
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -19,5 +19,10 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Modifying
     @Query(value = "select * from orders o where o.product_id = :product_id", nativeQuery = true)
     List<Order> getOrdersByProductId(@Param(value = "product_id") int product_id);
+
+    @Modifying
+//    @Query(value = "SELECT * FROM orders o INNER JOIN customers ON o.customer_id=customers.id;", nativeQuery = true)
+    @Query(value = "SELECT o.id, o.status, o.customer_id, customers.first_name, customers.last_name, o.product_id From orders o INNER JOIN customers ON o.customer_id=customers.id;", nativeQuery = true)
+    List<Order> getAllOrdersFromAllCustomers();
 
 }

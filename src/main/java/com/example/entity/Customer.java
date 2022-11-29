@@ -1,11 +1,16 @@
 package com.example.entity;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity(name = "customers")
+@RequiredArgsConstructor
+@Data
 public class Customer {
 
     @Id
@@ -45,81 +50,4 @@ public class Customer {
     @NotNull(message = "Address can not be empty and must have >0")
     private String address;
 
-    public Customer() {
-    }
-
-    public Customer(int id, String fName, String lName, String uName, String password, String emailId, String phoneNum, String address) {
-        this.id = id;
-        this.fName = fName;
-        this.lName = lName;
-        this.uName = uName;
-        this.password = password;
-        this.emailId = emailId;
-        this.phoneNum = phoneNum;
-        this.address = address;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getfName() {
-        return fName;
-    }
-
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    public String getlName() {
-        return lName;
-    }
-
-    public void setlName(String lName) {
-        this.lName = lName;
-    }
-
-    public String getuName() {
-        return uName;
-    }
-
-    public void setuName(String uName) {
-        this.uName = uName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }
